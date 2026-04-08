@@ -1,47 +1,88 @@
-import { LightningElement, track,wire } from 'lwc';
-import {  CurrentPageReference } from 'lightning/navigation';
-
-import getarticles from '@salesforce/apex/ArticleConfigurator.getArticles'
+import { LightningElement, wire, track, api } from 'lwc';
+import getArticlesByTopics from '@salesforce/apex/ArticleConfigurator.getArticlesByTopics';
 
 export default class AccordionArticles extends LightningElement {
-   
     @track articles = [];
+    @api topicName;
+    @api isPrimary = false;
+    @track loading = true;
+    @track feedback = {}; // { [articleId]: 1 or 0 }
 
-    @wire(CurrentPageReference)
-    currentPageRef(pageRef) {
-        if (pageRef) {
-            const fullPath = window.location.pathname;
-            const segments = fullPath.split('/').filter(Boolean);
-            const lastSegment = segments[segments.length - 1];
-            this.pageUrl = '/' + lastSegment;
-            console.log('Current child page URL name:', this.pageUrl);
-            this.fetchArticles();
+    @wire(getArticlesByTopics, { TopicName: '$topicName', isPrimary: '$isPrimary' })
+    wiredArticles({ data, error }) {
+        this.loading = false;
+        if (data) {
+            // Add open state and classes
+            this.articles = data.map((item, i) => ({
+                ...item,
+                isOpen: false,
+                iconName: 'utility:chevronright',
+                questionClass: 'faq-question',
+                headerClass: 'faq-header',
+                contentClass: 'faq-content'
+            }));
+            console.log('Fetched FAQ Articles:', this.articles);
+        } else if (error) {
+            this.articles = [];
+            console.error('Error fetching articles:', error);
         }
-        
-    }
-isPrimary=false;
-fetchArticles(){
-getarticles({ urlNames: ['Telangana'], isPrimary: this.isPrimary })        
-            .then(result => {
-            this.articles = result;
-            console.log('Fetched acc articles:', this.articles);
-        });
     }
 
     toggle(event) {
         const index = event.currentTarget.dataset.index;
-
         this.articles = this.articles.map((item, i) => {
             const isOpen = i == index ? !item.isOpen : false;
-
             return {
                 ...item,
                 isOpen,
                 iconName: isOpen ? 'utility:chevrondown' : 'utility:chevronright',
                 questionClass: isOpen ? 'faq-question open' : 'faq-question',
+                headerClass: isOpen ? 'faq-header open' : 'faq-header',
                 contentClass: isOpen ? 'faq-content open' : 'faq-content'
             };
         });
     }
 
+    // handleLike(event) {
+    //     const articleId = event.currentTarget.dataset.id;
+    //     this.feedback = { ...this.feedback, [articleId]: 1 };
+    //     console.log('User feedback (like):', this.feedback);
+    // }
+
+    // handleDislike(event) {
+    //     const articleId = event.currentTarget.dataset.id;
+    //     this.feedback = { ...this.feedback, [articleId]: 0 };
+    // }
+
+    // isLiked(articleId) {
+    //     return this.feedback[articleId] === 1;
+    // }
+
+    // isDisliked(articleId) {
+    //     return this.feedback[articleId] === 0;
+    // }
+    handleLike(event) {
+    const articleId = event.currentTarget.dataset.id;
+
+    this.feedback = { ...this.feedback, [articleId]: 1 };
+
+    this.updateFeedbackUI();
+}
+
+handleDislike(event) {
+    const articleId = event.currentTarget.dataset.id;
+
+    this.feedback = { ...this.feedback, [articleId]: 0 };
+
+    this.updateFeedbackUI();
+}
+updateFeedbackUI() {
+    this.articles = this.articles.map(item => {
+        return {
+            ...item,
+            likeIconClass: this.feedback[item.Id] === 1 ? 'selected-icon' : '',
+            dislikeIconClass: this.feedback[item.Id] === 0 ? 'selected-icon' : ''
+        };
+    });
+}
 }

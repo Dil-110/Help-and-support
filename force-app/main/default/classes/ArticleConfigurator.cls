@@ -1,18 +1,46 @@
 public without sharing class ArticleConfigurator {
 
- @AuraEnabled(cacheable=true)
-    public static List<Knowledge__kav> getArticles(List<String> urlNames, Boolean isPrimary) {
-        if(urlNames == null || urlNames.isEmpty()){
-            return new List<Knowledge__kav>();
-        }
+    // @AuraEnabled(cacheable=true)
+    // public static List<Knowledge__kav> getArticlesByTopics(String TopicName, Boolean isPrimary) {
+       
+    //     list<Knowledge__kav> articles=[
+    //         SELECT Id, Title, UrlName,Question__c, Answer__c,Sequence__c
+    //         FROM Knowledge__kav
+    //         WHERE Topic__r.name like :('%' + TopicName + '%')
+    //         AND PublishStatus = 'Online'
+    //         AND Primary__c = :isPrimary
+    //         AND Active__c=true
+    //         order by Sequence__c
+    //     ];
+    //     return articles;
+    // }
+    @AuraEnabled(cacheable=true)
+public static List<Knowledge__kav> getArticlesByTopics(String TopicName, Boolean isPrimary) {
 
-        list<Knowledge__kav> Kwb_articles=[
-            SELECT Id, Title, UrlName,Question__c, Answer__c,Topic__r.Name
+    // 🔹 Step 1: Search by Topic
+    List<Knowledge__kav> articles = [
+        SELECT Id, Title, UrlName, Question__c, Answer__c, Sequence__c
+        FROM Knowledge__kav
+        WHERE Topic__r.Name LIKE :('%' + TopicName + '%')
+        AND PublishStatus = 'Online'
+        AND Primary__c = :isPrimary
+        AND Active__c = true
+        ORDER BY Sequence__c
+    ];
+
+    // 🔹 Step 2: If no results → search by UrlName
+    if (articles.isEmpty()) {
+        articles = [
+            SELECT Id, Title, UrlName, Question__c, Answer__c, Sequence__c
             FROM Knowledge__kav
-            WHERE PublishStatus = 'Online'
+            WHERE UrlName LIKE :('%' + TopicName + '%')
+            AND PublishStatus = 'Online'
             AND Primary__c = :isPrimary
-            AND Active__c=true
+            AND Active__c = true
+            ORDER BY Sequence__c
         ];
-        return Kwb_articles;
     }
+
+    return articles;
+}
 }

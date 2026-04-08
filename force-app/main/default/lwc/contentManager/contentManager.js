@@ -1,15 +1,15 @@
-import { LightningElement, wire, track,api } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
-import getArticlesByPageUrl from '@salesforce/apex/contentManager.getArticlesByPageUrl';
-
+import getArticlesByTopics from '@salesforce/apex/ArticleConfigurator.getArticlesByTopics';
 
 export default class ContentManager extends NavigationMixin(LightningElement) {
-    @track pageUrl = '';
+    @track topicName = '';
     @track articleUrlNames = [];
     @track articles = [];
     @track isLoading = true;
     @track hasError = false;
     isPrimary = true;
+    Bool=true;
 
     @wire(CurrentPageReference)
     currentPageRef(pageRef) {
@@ -17,11 +17,12 @@ export default class ContentManager extends NavigationMixin(LightningElement) {
             const fullPath = window.location.pathname;
             const segments = fullPath.split('/').filter(Boolean);
             const lastSegment = segments[segments.length - 1];
-            this.pageUrl = '/' + lastSegment;
-            console.log('Current child page URL name:', this.pageUrl);
+            console.log('lastSegment', lastSegment);
+            this.topicName = lastSegment.replace(/[\/-]/g, " ");
+            console.log('Current page URL', this.topicName);
         }
     }
-    @wire(getArticlesByPageUrl, { pageUrl: '$pageUrl', isPrimary: '$isPrimary' })
+    @wire(getArticlesByTopics, { TopicName: '$topicName', isPrimary: '$isPrimary' })
     wiredArticles({ data, error }) {
     this.isLoading = false;
     if (data) {

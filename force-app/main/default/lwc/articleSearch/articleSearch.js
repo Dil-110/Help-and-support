@@ -5,20 +5,35 @@ import searchArticles from '@salesforce/apex/KnowledgeSearchController.searchArt
 export default class ArticleSearch extends NavigationMixin(LightningElement) {
     @track searchKey = '';
     @track articles = [];
-    @track isLoading = false;
+    @track isLoading = true;
     @track selectedArticle = null;
+    @track noResults = false; 
+    @track TopicName = '';
+    delayTimeout;
 
-    handleInputChange(event) {
+handleInputChange(event) {
         this.searchKey = event.target.value;
-    }
 
-    handleSearch() {
-        console.log('Search key:', this.searchKey);
         if (this.searchKey.length < 2) {
             this.articles = [];
+            this.TopicName = '';
             this.noResults = false;
+            this.isLoading = false;
+            clearTimeout(this.delayTimeout); 
             return;
         }
+        clearTimeout(this.delayTimeout);
+        this.delayTimeout = setTimeout(() => {
+            this.executeSearch();
+        }, 500);
+    }
+
+    handleSearch(){
+        
+        this.executeSearch();
+    }
+
+    executeSearch() {
         this.isLoading = true;
         searchArticles({ searchKey: this.searchKey })
             .then(result => {

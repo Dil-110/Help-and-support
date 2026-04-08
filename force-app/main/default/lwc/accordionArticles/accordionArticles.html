@@ -1,5 +1,6 @@
 <template>
     <h2 class="faq-title">Frequently asked questions</h2>
+
     <p class="faq-count">Showing 1 - {articles.length} of {articles.length} results</p>
 
     <div class="faq-container">
@@ -8,33 +9,48 @@
             <div key={item.Id} class="faq-item">
 
                 <!-- HEADER -->
-                <div class="faq-header" data-index={index} onclick={toggle}>
-                    
-                    <span class={item.questionClass}>
+                <div class={item.headerClass} data-index={index} onclick={toggle}>
+                        <span class={item.questionClass}>
                         {item.Title}
                     </span>
-
                     <lightning-icon
                         icon-name={item.iconName}
                         size="small"
                         class="faq-icon">
                     </lightning-icon>
-
                 </div>
 
                 <!-- CONTENT -->
                 <div class={item.contentClass}>
                     
-                    <div class="faq-left-border"></div>
-
                     <div class="faq-content-body">
                         <lightning-formatted-rich-text value={item.Answer__c}>
                         </lightning-formatted-rich-text>
 
                         <div class="faq-helpful">
                             <span>Was this helpful?</span>
-                            <lightning-icon icon-name="utility:like" size="small"></lightning-icon>
-                            <lightning-icon icon-name="utility:dislike" size="small"></lightning-icon>
+
+<button
+    class="faq-feedback-btn like-btn"
+    data-id={item.Id}
+    onclick={handleLike}>
+    <lightning-icon
+        icon-name="utility:like"
+        size="small"
+        class={item.likeIconClass}>
+    </lightning-icon>
+</button>
+
+<button
+    class="faq-feedback-btn dislike-btn"
+    data-id={item.Id}
+    onclick={handleDislike}>
+    <lightning-icon
+        icon-name="utility:dislike"
+        size="small"
+        class={item.dislikeIconClass}>
+    </lightning-icon>
+</button>
                         </div>
                     </div>
 
@@ -42,6 +58,5 @@
 
             </div>
         </template>
-
     </div>
 </template>
