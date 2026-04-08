@@ -1,0 +1,16 @@
+<template>
+    <div>
+        <template if:true={primaryArticle}>
+            <div class="slds-m-bottom_medium">
+                <lightning-formatted-rich-text value={primaryArticle.Question__c}></lightning-formatted-rich-text>
+            </div>
+            <div class="slds-m-bottom_medium">
+                <lightning-formatted-rich-text value={primaryArticle.Answer__c}></lightning-formatted-rich-text>
+            </div>
+        </template>
+    </div>
+    <hr class="divider" />
+    <button class="feedback-btn">
+        Give feedback on this article
+    </button>
+</template>

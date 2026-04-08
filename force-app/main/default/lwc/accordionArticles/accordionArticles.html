@@ -1,0 +1,47 @@
+<template>
+    <h2 class="faq-title">Frequently asked questions</h2>
+    <p class="faq-count">Showing 1 - {articles.length} of {articles.length} results</p>
+
+    <div class="faq-container">
+
+        <template for:each={articles} for:item="item" for:index="index">
+            <div key={item.Id} class="faq-item">
+
+                <!-- HEADER -->
+                <div class="faq-header" data-index={index} onclick={toggle}>
+                    
+                    <span class={item.questionClass}>
+                        {item.Title}
+                    </span>
+
+                    <lightning-icon
+                        icon-name={item.iconName}
+                        size="small"
+                        class="faq-icon">
+                    </lightning-icon>
+
+                </div>
+
+                <!-- CONTENT -->
+                <div class={item.contentClass}>
+                    
+                    <div class="faq-left-border"></div>
+
+                    <div class="faq-content-body">
+                        <lightning-formatted-rich-text value={item.Answer__c}>
+                        </lightning-formatted-rich-text>
+
+                        <div class="faq-helpful">
+                            <span>Was this helpful?</span>
+                            <lightning-icon icon-name="utility:like" size="small"></lightning-icon>
+                            <lightning-icon icon-name="utility:dislike" size="small"></lightning-icon>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </template>
+
+    </div>
+</template>

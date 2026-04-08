@@ -1,0 +1,43 @@
+.search-section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #efefef;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 600;
+    color:#212129;
+    margin-bottom: 20px;
+    font-family: APTypeProText, -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+    font-style: normal;
+    line-height: 24px;
+    letter-spacing: normal;
+}
+
+.search-box {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    background-color: #ffffff;
+    padding: 4px;
+    width: 480px;
+    max-width: 90%;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 12px;
+    font-size: 15px;
+}
+
+.search-btn {
+    background-color: #f4f6f9;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+}

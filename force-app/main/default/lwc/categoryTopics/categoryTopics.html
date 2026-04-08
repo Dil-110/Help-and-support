@@ -1,0 +1,40 @@
+<template>
+    <div class="page-wrapper">
+
+        <template if:true={isLoading}>
+            <div class="state-msg">Loading...</div>
+        </template>
+
+        <template if:true={hasError}>
+            <div class="state-msg error-msg">
+                Unable to load topics. Please try again.
+            </div>
+        </template>
+
+        <template if:true={hasData}>
+
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <p class="hero-label">HELP WITH</p>
+                    <h1 class="hero-title">{categoryTitle}</h1>
+                </div>
+                <div class="hero-image">
+                    <img src={categoryIcon} alt={categoryTitle} />
+                </div>
+            </div>
+
+            <div class="topics-grid">
+                <template for:each={topics} for:item="topic">
+                    <div key={topic.id}
+                         class="topic-card"
+                         onclick={handleTopicClick}
+                         data-url={topic.pageUrl}>
+                        <span class="topic-title">{topic.title}</span>
+                        <span class="chevron">&#8250;</span>
+                    </div>
+                </template>
+            </div>
+
+        </template>
+    </div>
+</template>

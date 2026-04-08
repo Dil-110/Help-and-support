@@ -1,0 +1,34 @@
+<template>
+    <h3 class="title">Search Help and support</h3>
+        <div class="search-box">
+            <input
+                type="text"
+                placeholder="Try 'What does my status mean?'"
+                oninput={handleInputChange}/>
+            <button class="search-btn" onclick={handleSearch}>
+                <lightning-icon
+                    icon-name="utility:search"
+                    size="small"
+                    alternative-text="Search">
+                </lightning-icon>
+            </button>
+        </div>
+        <template if:true={hasArticles}>
+    <ul class="slds-m-top_medium">
+        <template for:each={articles} for:item="article">
+            <li key={article.Id}>
+                <a href="javascript:void(0)"
+                   data-url={article.UrlName}
+                   onclick={handleArticleClick}>
+                    {article.Title}
+                </a>
+            </li>
+        </template>
+    </ul>
+</template>
+        <!-- No Results -->
+        <template if:true={noResults}>
+            <p class="slds-m-top_medium">No results found</p>
+        </template>
+
+</template>
