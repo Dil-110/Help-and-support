@@ -1,62 +1,89 @@
 <template>
-    <h2 class="faq-title">Frequently asked questions</h2>
+<h2 class="faq-title">Frequently asked questions</h2>
 
-    <p class="faq-count">Showing 1 - {articles.length} of {articles.length} results</p>
+<p class="faq-count">Showing 1 - {articles.length} of {articles.length} results</p>
 
-    <div class="faq-container">
+<div class="faq-container">
 
-        <template for:each={articles} for:item="item" for:index="index">
-            <div key={item.Id} class="faq-item">
+    <template for:each={articles} for:item="item" for:index="index">
+        <div key={item.Id} class="faq-item">
 
-                <!-- HEADER -->
-                <div class={item.headerClass} data-index={index} onclick={toggle}>
-                        <span class={item.questionClass}>
-                        {item.Title}
-                    </span>
-                    <lightning-icon
-                        icon-name={item.iconName}
-                        size="small"
-                        class="faq-icon">
-                    </lightning-icon>
-                </div>
+            <!-- HEADER -->
+            <div class={item.headerClass} data-index={index} onclick={toggle}>
+                    <span class={item.questionClass}>
+                    {item.Title}
+                </span>
+                <lightning-icon
+                    icon-name={item.iconName}
+                    size="small"
+                    class="faq-icon">
+                </lightning-icon>
+            </div>
 
-                <!-- CONTENT -->
-                <div class={item.contentClass}>
-                    
-                    <div class="faq-content-body">
-                        <lightning-formatted-rich-text value={item.Answer__c}>
-                        </lightning-formatted-rich-text>
+            <!-- CONTENT -->
+            <div class={item.contentClass}>
+                
+                <div class="faq-content-body">
+                    <lightning-formatted-rich-text value={item.Answer__c}>
+                    </lightning-formatted-rich-text>
 
-                        <div class="faq-helpful">
-                            <span>Was this helpful?</span>
-
+                    <div class="faq-helpful">
+                        <span>Was this helpful?</span>
+<template if:false={item.showTextarea}>
 <button
-    class="faq-feedback-btn like-btn"
-    data-id={item.Id}
-    onclick={handleLike}>
-    <lightning-icon
-        icon-name="utility:like"
-        size="small"
-        class={item.likeIconClass}>
-    </lightning-icon>
+class="faq-feedback-btn like-btn"
+data-id={item.Id}
+data-value="1"
+onclick={handleFeedback}>
+<lightning-icon
+    icon-name="utility:like"
+    size="small"
+    class={item.likeIconClass}>
+</lightning-icon>
 </button>
 
 <button
-    class="faq-feedback-btn dislike-btn"
-    data-id={item.Id}
-    onclick={handleDislike}>
-    <lightning-icon
-        icon-name="utility:dislike"
-        size="small"
-        class={item.dislikeIconClass}>
-    </lightning-icon>
+class="faq-feedback-btn dislike-btn"
+data-id={item.Id}
+data-value="0"
+onclick={handleFeedback}>
+<lightning-icon
+    icon-name="utility:dislike"
+    size="small"
+    class={item.dislikeIconClass}>
+</lightning-icon>
 </button>
-                        </div>
+</template>
+        <template if:true={item.showSuccess}>
+            <p class="success-msg">Response saved ✅</p>
+        </template>
                     </div>
+                    <template if:true={item.showTextarea}>
+                    <div class="aria-describedby-later slds-box slds-m-around__large">
+            <lightning-textarea label="Enter some text" aria-labelledby="desc-4 desc-3"  data-id={item.Id}></lightning-textarea>
+        </div>
 
+        <div class="button-container">
+        <lightning-button
+                variant="brand"
+                label="Submit"
+                class="show-more-btn"
+                data-id={item.Id}
+                onclick={handleSubmit}
+        ></lightning-button>
+        <lightning-button
+                data-id={item.Id}
+                variant="neutral"
+                label="Cancel"
+                onclick={handleCancel}
+                ></lightning-button>
+                </div>
+                </template>
                 </div>
 
             </div>
-        </template>
-    </div>
+
+        </div>
+    </template>
+</div>
 </template>

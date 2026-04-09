@@ -14,6 +14,7 @@
     border: 1px solid #d8dde6;
     border-radius: 4px;
     background: #fff;
+    max-height: fit-content;
 }
 
 /* Each item */
@@ -71,7 +72,8 @@
 
 /* Open animation */
 .faq-content.open {
-    max-height: 600px;
+    max-height: none;   /* ✅ allow full expansion */
+    overflow: visible; 
     border-left: 4px solid #d0021b;
 }
 
@@ -91,81 +93,57 @@
 .faq-question:hover {
     color: #d0021b;
 }
-
-/* Feedback buttons 
-.faq-feedback-btn {
-    background: transparent !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
-    transition: color 0.2s, transform 0.2s;
-    margin: 0 2px;
-    padding: 0;
+.liked-icon {
+    --slds-c-icon-color-foreground: #1b9cfc;
 }
 
-.faq-feedback-btn:hover,
-.faq-feedback-btn.selected {
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    color: #ffb300;
-    transform: scale(1.3);
-    box-shadow: none !important;
+.unliked-icon {
+    --slds-c-icon-color-foreground: #95a5a6;
 }
-
-.faq-feedback-btn.like-btn.selected lightning-primitive-icon,
-.faq-feedback-btn.like-btn:hover lightning-primitive-icon {
-    fill: #ffb300 !important;
-    color: #ffb300 !important;
-}
-
-.faq-feedback-btn.dislike-btn.selected lightning-primitive-icon,
-.faq-feedback-btn.dislike-btn:hover lightning-primitive-icon {
-    fill: #ffb300 !important;
-    color: #ffb300 !important;
-}
-    */
 .faq-feedback-btn {
     background: transparent;
     border: none;
-    outline: none;
-    box-shadow: none;
-
-    padding: 0;
-    margin: 0 4px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
+    padding: 4px;
     cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-/* remove focus ring completely */
-.faq-feedback-btn:focus,
-.faq-feedback-btn:focus-visible {
-    outline: none;
-    box-shadow: none;
+/* Hover effect */
+.faq-feedback-btn:hover {
+    transform: scale(1.4);
+    --slds-c-icon-color-foreground-default: #e0245e;
 }
 
-/* icon color default */
-.faq-feedback-btn lightning-icon {
-    --slds-c-icon-color-foreground-default: #6b6b6b;
+/* Click (pressed) effect */
+.faq-feedback-btn:active {
+    transform: scale(0.9);
+    --slds-c-icon-color-foreground-default: #e0245e;
 }
+.liked lightning-icon {
+    --slds-c-icon-color-foreground-default: #e0245e;
+}
+/* For LIKE */
+lightning-icon.selected-icon {
+    --slds-c-icon-color-foreground-default: #e0245e;
+}
+.button-container {
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+.success-msg {
+    text-align: center;
+    color: green;
+    margin-top: 8px;
+    font-size: 14px;
+}
+.show-more-btn {
+    --slds-c-button-brand-color-background: #d0021b;
+    --slds-c-button-brand-color-border: #d0021b;
+    --slds-c-button-text-color: #ffffff;
+    padding-right: 24px;
+    text-align: center;
+    min-width: 100px !important;
 
-/* hover + selected */
-.faq-feedback-btn:hover,
-.faq-feedback-btn.selected {
-    transform: scale(1.15);
-}
-
-.faq-feedback-btn:hover lightning-icon,
-.faq-feedback-btn.selected lightning-icon {
-    --slds-c-icon-color-foreground-default: #ffb300;
-}
-.selected-icon {
-    --slds-c-icon-color-foreground-default: #ffb300;
-    transform: scale(1.2);
 }

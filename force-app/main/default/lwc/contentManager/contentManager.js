@@ -9,8 +9,7 @@ export default class ContentManager extends NavigationMixin(LightningElement) {
     @track isLoading = true;
     @track hasError = false;
     isPrimary = true;
-    Bool=true;
-
+    
     @wire(CurrentPageReference)
     currentPageRef(pageRef) {
         if (pageRef) {

@@ -7,13 +7,13 @@
             <div class="slds-m-bottom_medium">
                 <lightning-formatted-rich-text value={primaryArticle.Answer__c}></lightning-formatted-rich-text>
             </div>
+                <div class="exampleHolder">
+        <lightning-spinner alternative-text="Loading" size="x-small"></lightning-spinner>
+    </div>
         </template>
     </div>
     <hr class="divider" />
     <button class="feedback-btn">
         Give feedback on this article
     </button>
-    <template if:true={Bool}>
-        <c-accordion-articles topic-name={topicName}></c-accordion-articles>
-    </template>
 </template>

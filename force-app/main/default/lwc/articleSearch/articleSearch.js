@@ -10,6 +10,8 @@ export default class ArticleSearch extends NavigationMixin(LightningElement) {
     @track noResults = false; 
     @track TopicName = '';
     delayTimeout;
+    pageSize = 4;        // how many to show per load
+    visibleCount = 3;    // current visible items
 
 handleInputChange(event) {
         this.searchKey = event.target.value;
@@ -35,6 +37,7 @@ handleInputChange(event) {
 
     executeSearch() {
         this.isLoading = true;
+        this.visibleCount = this.pageSize;
         searchArticles({ searchKey: this.searchKey })
             .then(result => {
                   console.log('Apex result:', result); 
@@ -79,5 +82,14 @@ get noResults() {
 }
 getUrl(urlName) {
     return `/s/article/${urlName}`;
+}
+get visibleArticles() {
+    return this.articles.slice(0, this.visibleCount);
+}
+get hasMore() {
+    return this.visibleCount < this.articles.length;
+}
+handleShowMore() {
+    this.visibleCount += this.pageSize;
 }
 }

@@ -25,3 +25,11 @@
     .faq-item.active .arrow {
       transform: rotate(180deg);
     }
+
+
+    .exampleHolder {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}

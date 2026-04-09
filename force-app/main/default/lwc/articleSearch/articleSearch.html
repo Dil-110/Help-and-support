@@ -15,7 +15,7 @@
         </div>
         <template if:true={hasArticles}>
     <ul class="slds-m-top_medium">
-        <template for:each={articles} for:item="article">
+        <template for:each={visibleArticles} for:item="article">
             <li key={article.Id}>
                 <a href="javascript:void(0)"
                    data-url={article.UrlName}
@@ -25,7 +25,15 @@
             </li>
         </template>
     </ul>
+    <template if:true={hasMore}>
+        <lightning-button
+            variant="base"
+            label="Show more"
+            onclick={handleShowMore}>
+        </lightning-button>
+    </template>
 </template>
+    
         <!-- No Results -->
         <template if:true={noResults}>
             <p class="slds-m-top_medium">No results found</p>
